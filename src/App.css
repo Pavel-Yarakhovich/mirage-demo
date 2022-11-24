@@ -1,38 +1,152 @@
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  height: 12vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(16px + 2vmin);
+  font-weight: 600;
+  text-transform: uppercase;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.App-content {
+  height: 88vh;
+  max-height: 88vh;
+  background-color: #30353f;
+  display: flex;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.App-content-list {
+  flex: 60% 0 0;
+  max-height: 88vh;
+  overflow: auto;
+  background-color: #353b46;
+  padding: 24px;
+  box-sizing: border-box;
+  border-radius: 0 12px 0 0;
+}
+
+.App-content-create, .App-content-edit {
+  flex: 40% 0 0;
+  padding: 24px;
+  box-sizing: border-box;
+  color: white;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.App-content-edit {
+
+}
+
+.teammate {
+  position: relative;
+  margin-bottom: 15px;
+  background-color: #21252c;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  box-sizing: border-box;
+  color: white;
+  border-radius: 3px;
+}
+
+.teammate_image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.teammate_name {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 8px;
+}
+
+.teammmate_occupation {
+  font-size: 16px;
+}
+
+.teammate_edit, .teammate_delete {
+  position: absolute;
+  right: 16px;
+  width: 70px;
+  height: 60px;
+  border: none;
+  color: white;
+  background-color: #30353f;
+  cursor: pointer;
+}
+
+.teammate_edit {
+  bottom: 16px;
+}
+
+.teammate_delete {
+  top: 16px;
+  background-color: #331313;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form_input {
+  width: 100%;
+  height: 50px;
+  background: white;
+  margin-bottom: 12px;
+  font-size: 18px;
+  border: none;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 3px;
+}
+
+.form_buttons {
+  width: 100%;
+  gap: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.action_column {
+  flex: 30% 1 1;
+}
+
+.form_submit, .form_cancel, .create_teammate {
+  width: 100%;
+  height: 50px;
+  background-color: #21252c;
+  color: white;
+  margin-bottom: 12px;
+  font-size: 18px;
+  border: none;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.form_cancel {
+  background-color: #301318;
+}
+
+.create_teammate {
+  background-color: #0c1f0e;
+  font-weight: 600;
 }
