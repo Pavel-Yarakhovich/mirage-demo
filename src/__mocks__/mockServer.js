@@ -1,17 +1,7 @@
-import { Server } from "miragejs";
-import { v4 } from "uuid";
+import { Server, Model } from "miragejs";
+import { faker } from "@faker-js/faker";
 
 const HOST = process.env.REACT_APP_API_HOST;
-const AVATAR = process.env.REACT_APP_AVATAR;
-
-let team = [
-  {
-    id: "1",
-    name: "Mocked John",
-    occupation: "Developer",
-    avatar: AVATAR,
-  },
-];
 
 export function startMockServer({ environment = "development" } = {}) {
   return new Server({
@@ -20,48 +10,50 @@ export function startMockServer({ environment = "development" } = {}) {
     timing: 200, // global timing parameter
     urlPrefix: HOST,
 
-    // routes() {
-    //   // Get teammates
-    //   this.get(`/team`, () => team, { timing: 400 }); // timing specific to this route
+    models: {
+      teammate: Model,
+    },
 
-    //   // Create a teammate
-    //   this.post(`/team`, (_, req) => {
-    //     const { name, occupation } = JSON.parse(req.requestBody);
-    //     const teammate = {
-    //       id: v4(),
-    //       name,
-    //       occupation,
-    //       avatar: AVATAR,
-    //     };
-    //     team.push(teammate);
-    //     return teammate;
-    //   });
+    seeds(server) {
+      server.create("teammate", {
+        name: faker.name.fullName(),
+        occupation: faker.random.word(),
+        avatar: faker.image.avatar(80, 80),
+      });
+    },
 
-    //   // Update a teammate
-    //   this.put(`/team/:id`, (_, req) => {
-    //     const { id } = req.params;
-    //     const { name, occupation } = JSON.parse(req.requestBody);
-    //     team = team.map((teammate) => {
-    //       if (teammate.id === String(id)) {
-    //         return {
-    //           ...teammate,
-    //           name,
-    //           occupation,
-    //         };
-    //       } else {
-    //         return teammate;
-    //       }
-    //     });
-    //     const updatedTeammate = team.find((teammate) => teammate.id === id);
-    //     return updatedTeammate;
-    //   });
+    routes() {
+      // Get teammates
+      this.get(`/team`, (schema) => schema.teammates.all(), {
+        timing: 400,
+      }); // timing specific to this route
 
-    //   // Delete a teammate
-    //   this.delete(`/team/:id`, (_, req) => {
-    //     const { id } = req.params;
-    //     team = team.filter((teammate) => teammate.id !== String(id));
-    //     return team;
-    //   });
-    // },
+      // Create a teammate
+      this.post(`/team`, (schema, req) => {
+        const { name, occupation } = JSON.parse(req.requestBody);
+        return schema.teammates.create({
+          name,
+          occupation,
+          avatar: faker.image.avatar(80, 80),
+        });
+      });
+
+      // Update a teammate
+      this.put(`/team/:id`, (schema, req) => {
+        const { id } = req.params;
+        const { name, occupation } = JSON.parse(req.requestBody);
+        const teammate = schema.teammates.findBy({ id });
+        teammate.update({ name, occupation });
+        return schema.teammates.findBy({ id });
+      });
+
+      // Delete a teammate
+      this.delete(`/team/:id`, (schema, req) => {
+        const { id } = req.params;
+        const teammate = schema.teammates.findBy({ id });
+        teammate.destroy();
+        return schema.teammates.all();
+      });
+    },
   });
 }

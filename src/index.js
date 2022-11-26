@@ -5,9 +5,9 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { startMockServer } from "./__mocks__/mockServer";
 
-// if (process.env.NODE_ENV !== "production") {
-//   startMockServer();
-// }
+if (process.env.NODE_ENV !== "production") {
+  startMockServer();
+}
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

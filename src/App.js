@@ -56,8 +56,7 @@ function App() {
     axios
       .get(`${HOST}/team`)
       .then((response) => {
-        console.log("RE ", response);
-        setTeam(response?.data ?? []);
+        setTeam(response?.data?.teammates ?? []);
       })
       .catch((error) => console.log("GET ERROR", error));
   }, []);
@@ -65,7 +64,7 @@ function App() {
   const deleteTeammate = (id) => {
     axios
       .delete(`${HOST}/team/${id}`)
-      .then((response) => setTeam(response?.data ?? []))
+      .then((response) => setTeam(response?.data?.teammates ?? []))
       .catch((error) => console.log("DELETE ERROR", error));
   };
 
@@ -73,7 +72,7 @@ function App() {
     if (!name || !occupation) return;
     axios
       .post(`${HOST}/team`, { name, occupation, avatar: AVATAR })
-      .then((response) => setTeam((team) => [...team, response.data]))
+      .then((response) => setTeam((team) => [...team, response.data.teammate]))
       .catch((error) => console.log("POST ERROR", error));
     setIsCreating(false);
   };
@@ -84,8 +83,8 @@ function App() {
       .then((response) => {
         setTeam((team) => {
           return team.map((mate) => {
-            if (mate.id === response.data.id) {
-              return response.data;
+            if (mate.id === response.data.teammate.id) {
+              return response.data.teammate;
             } else {
               return mate;
             }
@@ -156,7 +155,6 @@ function App() {
                 values={edit}
                 onSubmit={(teammate) => {
                   updateTeammate(teammate);
-                  setIsCreating(true);
                 }}
                 onCancel={() => {
                   setEdit(null);
