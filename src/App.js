@@ -4,6 +4,7 @@ import "./App.css";
 import axios from "axios";
 
 const HOST = process.env.REACT_APP_API_HOST;
+const AVATAR = process.env.REACT_APP_AVATAR;
 
 function Form({ onSubmit, values, onCancel }) {
   const [localValues, setLocalValues] = useState(values);
@@ -54,7 +55,10 @@ function App() {
   useEffect(() => {
     axios
       .get(`${HOST}/team`)
-      .then((response) => setTeam(response?.data ?? []))
+      .then((response) => {
+        console.log("RE ", response);
+        setTeam(response?.data ?? []);
+      })
       .catch((error) => console.log("GET ERROR", error));
   }, []);
 
@@ -68,7 +72,7 @@ function App() {
   const createTeammate = ({ name, occupation }) => {
     if (!name || !occupation) return;
     axios
-      .post(`${HOST}/team`, { name, occupation })
+      .post(`${HOST}/team`, { name, occupation, avatar: AVATAR })
       .then((response) => setTeam((team) => [...team, response.data]))
       .catch((error) => console.log("POST ERROR", error));
     setIsCreating(false);

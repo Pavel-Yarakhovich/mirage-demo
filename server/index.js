@@ -32,7 +32,7 @@ app.put("/team/:id", async (req, res) => {
 });
 
 app.post("/team", async (req, res) => {
-  const { name, occupation } = req?.body;
+  const { name, occupation, avatar } = req?.body;
   if (!name || !occupation) {
     return res.json({ error: "Wrong data" });
   }
@@ -41,8 +41,7 @@ app.post("/team", async (req, res) => {
     data: {
       name,
       occupation,
-      avatar:
-        "https://img.freepik.com/free-vector/cute-girl-gaming-holding-joystick-cartoon-icon-illustration-people-technology-icon-concept-isolated-flat-cartoon-style_138676-2169.jpg?w=826&t=st=1669140681~exp=1669141281~hmac=87c1049d81317ac3cb9db425c21eb9c5c80b1eacfd1b13c715c91aaa4e2abdbc",
+      avatar,
     },
   });
   return res.json(teammate);
