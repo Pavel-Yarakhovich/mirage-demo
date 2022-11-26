@@ -19,6 +19,7 @@ function Form({ onSubmit, values, onCancel }) {
       }}
     >
       <input
+        data-testid="name"
         type="text"
         value={localValues.name}
         onChange={({ target }) =>
@@ -27,6 +28,7 @@ function Form({ onSubmit, values, onCancel }) {
         className="form_input"
       />
       <input
+        data-testid="occupation"
         type="text"
         value={localValues.occupation}
         onChange={({ target }) =>
@@ -38,7 +40,7 @@ function Form({ onSubmit, values, onCancel }) {
         <button className="form_cancel" onClick={onCancel}>
           Cancel
         </button>
-        <button className="form_submit" type="submit">
+        <button className="form_submit" type="submit" data-testid="submit">
           Confirm
         </button>
       </div>
@@ -100,38 +102,51 @@ function App() {
       <header className="App-header">Team</header>
       <main className="App-content ">
         <section className="App-content-list">
-          {team.map((teammate) => (
-            <div className="teammate" key={teammate.id}>
-              <img
-                src={teammate.avatar}
-                alt="name"
-                className="teammate_image"
-              />
-              <div className="teammate_name">{teammate.name}</div>
-              <div className="teammmate_occupation">{teammate.occupation}</div>
+          {team?.length ? (
+            team.map((teammate) => (
+              <div
+                className="teammate"
+                key={teammate.id}
+                data-testid="teammate-card"
+              >
+                <img
+                  src={teammate.avatar}
+                  alt="name"
+                  className="teammate_image"
+                />
+                <div className="teammate_name">{teammate.name}</div>
+                <div className="teammmate_occupation">
+                  {teammate.occupation}
+                </div>
 
-              <button
-                className="teammate_edit"
-                onClick={() => {
-                  setIsCreating(false);
-                  setEdit(teammate);
-                }}
-              >
-                Edit
-              </button>
-              <button
-                className="teammate_delete"
-                onClick={() => deleteTeammate(teammate.id)}
-              >
-                Delete
-              </button>
-            </div>
-          ))}
+                <button
+                  className="teammate_edit"
+                  onClick={() => {
+                    setIsCreating(false);
+                    setEdit(teammate);
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  className="teammate_delete"
+                  onClick={() => deleteTeammate(teammate.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            ))
+          ) : (
+            <div className="no_teammates">No teammates</div>
+          )}
         </section>
 
         <div className="action_column">
           {isCreating ? (
-            <section className="App-content-create">
+            <section
+              className="App-content-create"
+              data-testid="create_section"
+            >
               <h3>Add teammate</h3>
               <Form
                 values={{}}
@@ -141,6 +156,7 @@ function App() {
             </section>
           ) : (
             <button
+              data-testid="create_teammate"
               className="create_teammate"
               onClick={() => setIsCreating(true)}
             >

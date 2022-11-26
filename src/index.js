@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { startMockServer } from "./__mocks__/mockServer";
+import { startMockServer } from "./mockServer";
 
 if (process.env.NODE_ENV !== "production") {
   startMockServer();
