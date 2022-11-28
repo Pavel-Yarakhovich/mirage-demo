@@ -131,7 +131,7 @@ function App() {
             <section className="App-content-create">
               <h3>Add teammate</h3>
               <Form
-                values={{}}
+                values={{ name: "", occupation: "" }}
                 onSubmit={createTeammate}
                 onCancel={() => setIsCreating(false)}
               />
