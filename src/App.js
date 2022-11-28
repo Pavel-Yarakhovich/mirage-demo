@@ -56,7 +56,6 @@ function App() {
     axios
       .get(`${HOST}/team`)
       .then((response) => {
-        console.log("RE ", response);
         setTeam(response?.data ?? []);
       })
       .catch((error) => console.log("GET ERROR", error));
