@@ -56,7 +56,8 @@ function App() {
     axios
       .get(`${HOST}/team`)
       .then((response) => {
-        setTeam(response?.data?.teammates ?? []);
+        console.log("response ", response);
+        setTeam(response?.data ?? []);
       })
       .catch((error) => console.log("GET ERROR", error));
   }, []);
@@ -64,7 +65,7 @@ function App() {
   const deleteTeammate = (id) => {
     axios
       .delete(`${HOST}/team/${id}`)
-      .then((response) => setTeam(response?.data?.teammates ?? []))
+      .then((response) => setTeam(response?.data ?? []))
       .catch((error) => console.log("DELETE ERROR", error));
   };
 
@@ -72,7 +73,7 @@ function App() {
     if (!name || !occupation) return;
     axios
       .post(`${HOST}/team`, { name, occupation, avatar: AVATAR })
-      .then((response) => setTeam((team) => [...team, response.data.teammate]))
+      .then((response) => setTeam((team) => [...team, response.data]))
       .catch((error) => console.log("POST ERROR", error));
     setIsCreating(false);
   };
@@ -83,8 +84,8 @@ function App() {
       .then((response) => {
         setTeam((team) => {
           return team.map((mate) => {
-            if (mate.id === response.data.teammate.id) {
-              return response.data.teammate;
+            if (mate.id === response.data.id) {
+              return response.data;
             } else {
               return mate;
             }
@@ -134,7 +135,8 @@ function App() {
             <section className="App-content-create">
               <h3>Add teammate</h3>
               <Form
-                values={{}}
+                key="create"
+                values={{ name: "", occupation: "" }}
                 onSubmit={createTeammate}
                 onCancel={() => setIsCreating(false)}
               />
@@ -152,6 +154,7 @@ function App() {
             <section className="App-content-edit">
               <h3>Edit teammate</h3>
               <Form
+                key="edit"
                 values={edit}
                 onSubmit={(teammate) => {
                   updateTeammate(teammate);

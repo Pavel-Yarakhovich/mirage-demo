@@ -1,4 +1,4 @@
-import { Server, Model } from "miragejs";
+import { Server, Model, RestSerializer } from "miragejs";
 import { faker } from "@faker-js/faker";
 
 const HOST = process.env.REACT_APP_API_HOST;
@@ -12,6 +12,13 @@ export function startMockServer({ environment = "development" } = {}) {
 
     models: {
       teammate: Model,
+    },
+
+    serializers: {
+      teammate: RestSerializer.extend({
+        root: false,
+        embed: true,
+      }),
     },
 
     seeds(server) {
