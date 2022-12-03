@@ -3,7 +3,13 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+
+// mock server related
 import { startMockServer } from "./__mocks__/mockServer";
+
+// state manager related
+import { store } from "./store";
+import { Provider } from "react-redux";
 
 if (process.env.NODE_ENV !== "production") {
   startMockServer();
@@ -12,7 +18,9 @@ if (process.env.NODE_ENV !== "production") {
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );
 

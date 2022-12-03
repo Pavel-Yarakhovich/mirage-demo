@@ -54,18 +54,25 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-end;
   padding: 16px;
   box-sizing: border-box;
   color: white;
-  border-radius: 3px;
+  border-radius: 16px 8px 8px;
+  overflow: hidden;
+  height: 160px;
 }
 
 .teammate_image {
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
   object-position: center;
+  position: absolute;
+  top: -30px;
+  left: -30px;
+  border: 12px solid #353b46;
 }
 
 .teammate_name {
@@ -82,11 +89,14 @@
   position: absolute;
   right: 16px;
   width: 70px;
-  height: 60px;
+  height: 50px;
   border: none;
   color: white;
-  background-color: #30353f;
+  background-color: #4d5668;
   cursor: pointer;
+  border-radius: 6px;
+  font-weight: 600;
+  letter-spacing: 0.03rem;
 }
 
 .teammate_edit {
@@ -95,7 +105,7 @@
 
 .teammate_delete {
   top: 16px;
-  background-color: #331313;
+  background-color: #610909;
 }
 
 .form {
@@ -138,7 +148,7 @@
   border: none;
   padding: 10px;
   box-sizing: border-box;
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: pointer;
 }
 
@@ -147,6 +157,8 @@
 }
 
 .create_teammate {
-  background-color: #0c1f0e;
+  background-color: #346739;
   font-weight: 600;
+  height: 60px;
+  border-radius: 0;
 }

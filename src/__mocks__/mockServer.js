@@ -22,11 +22,11 @@ export function startMockServer({ environment = "development" } = {}) {
     },
 
     seeds(server) {
-      // server.create("teammate", {
-      //   name: faker.name.fullName(),
-      //   occupation: faker.random.word(),
-      //   avatar: faker.image.avatar(80, 80),
-      // });
+      server.create("teammate", {
+        name: faker.name.fullName(),
+        occupation: faker.random.word(),
+        avatar: faker.image.avatar(80, 80),
+      });
     },
 
     routes() {
@@ -55,6 +55,12 @@ export function startMockServer({ environment = "development" } = {}) {
       });
 
       // Delete a teammate
+      this.delete(`/team/:id`, (schema, req) => {
+        const { id } = req.params;
+        const teammate = schema.teammates.findBy({ id });
+        teammate.destroy();
+        return schema.teammates.all();
+      });
     },
   });
 }

@@ -3,6 +3,13 @@ import "./App.css";
 
 import axios from "axios";
 
+import { useSelector, useDispatch } from "react-redux";
+import {
+  increment,
+  decrement,
+  setByAmount,
+} from "./features/team/teamSizeSlice";
+
 const HOST = process.env.REACT_APP_API_HOST;
 const AVATAR = process.env.REACT_APP_AVATAR;
 
@@ -50,22 +57,37 @@ function App() {
   const [isCreating, setIsCreating] = useState(false);
   const [edit, setEdit] = useState();
 
-  const [team, setTeam] = useState([]);
+  const [team, setTeam] = useState();
+  const [fetching, setFetching] = useState(false);
+
+  const teamSize = useSelector((state) => state.teamSize.value);
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    if (team || fetching) return;
+    setFetching(true);
+    console.log("GET");
     axios
       .get(`${HOST}/team`)
       .then((response) => {
-        console.log("response ", response);
-        setTeam(response?.data ?? []);
+        setFetching(false);
+        const team = response?.data ?? [];
+        setTeam(team);
+        dispatch(setByAmount(team.length));
       })
-      .catch((error) => console.log("GET ERROR", error));
-  }, []);
+      .catch((error) => {
+        setFetching(false);
+        console.log("GET ERROR", error);
+      });
+  }, [dispatch, team, fetching]);
 
   const deleteTeammate = (id) => {
     axios
       .delete(`${HOST}/team/${id}`)
-      .then((response) => setTeam(response?.data ?? []))
+      .then((response) => {
+        setTeam(response?.data ?? []);
+        dispatch(decrement());
+      })
       .catch((error) => console.log("DELETE ERROR", error));
   };
 
@@ -73,7 +95,10 @@ function App() {
     if (!name || !occupation) return;
     axios
       .post(`${HOST}/team`, { name, occupation, avatar: AVATAR })
-      .then((response) => setTeam((team) => [...team, response.data]))
+      .then((response) => {
+        setTeam((team) => [...team, response.data]);
+        dispatch(increment());
+      })
       .catch((error) => console.log("POST ERROR", error));
     setIsCreating(false);
   };
@@ -98,10 +123,14 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">Team</header>
+      <header className="App-header">
+        Team {"[ "}
+        {teamSize}
+        {" ]"}
+      </header>
       <main className="App-content ">
         <section className="App-content-list">
-          {team.map((teammate) => (
+          {team?.map((teammate) => (
             <div className="teammate" key={teammate.id}>
               <img
                 src={teammate.avatar}
