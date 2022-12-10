@@ -8,12 +8,12 @@ import reportWebVitals from "./reportWebVitals";
 import { startMockServer } from "./__mocks__/mockServer";
 
 // state manager related
-import { store } from "./store";
+import store from "./store";
 import { Provider } from "react-redux";
 
-if (process.env.NODE_ENV !== "production") {
-  startMockServer();
-}
+// if (process.env.NODE_ENV !== "production") {
+//   startMockServer();
+// }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

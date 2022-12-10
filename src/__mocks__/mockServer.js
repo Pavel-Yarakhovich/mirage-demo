@@ -30,6 +30,8 @@ export function startMockServer({ environment = "development" } = {}) {
     },
 
     routes() {
+      this.passthrough("https://jsonplaceholder.typicode.com/users");
+
       // Get teammates
       this.get(`/team`, (schema) => schema.teammates.all(), {
         timing: 400,

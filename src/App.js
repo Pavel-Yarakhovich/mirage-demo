@@ -9,6 +9,7 @@ import {
   decrement,
   setByAmount,
 } from "./features/team/teamSizeSlice";
+import { sagaActions } from "./store/saga/sagaActions";
 
 const HOST = process.env.REACT_APP_API_HOST;
 const AVATAR = process.env.REACT_APP_AVATAR;
@@ -60,9 +61,10 @@ function App() {
   const [team, setTeam] = useState();
   const [fetching, setFetching] = useState(false);
 
-  const teamSize = useSelector((state) => state.teamSize.value);
   const dispatch = useDispatch();
-
+  const teamSize = useSelector((state) => state.teamSize.value);
+  const randomData = useSelector((state) => state.randomData.dataPerTeammate);
+  console.log("randomData ", randomData);
   useEffect(() => {
     if (team || fetching) return;
     setFetching(true);
@@ -98,6 +100,10 @@ function App() {
       .then((response) => {
         setTeam((team) => [...team, response.data]);
         dispatch(increment());
+        dispatch({
+          type: sagaActions.FETCH_DATA_SAGA,
+          payload: response.data.id,
+        });
       })
       .catch((error) => console.log("POST ERROR", error));
     setIsCreating(false);
@@ -129,7 +135,15 @@ function App() {
         {" ]"}
       </header>
       <main className="App-content ">
-        <section className="App-content-list">
+        <video
+          style={{ position: "fixed" }}
+          tabindex="-1"
+          disableremoteplayback=""
+          webkit-playsinline=""
+          playsinline=""
+          src="https://aesport.tv/f7c21009-c8e0-48b9-b4fa-ee8453da6b2e"
+        ></video>
+        {/* <section className="App-content-list">
           {team?.map((teammate) => (
             <div className="teammate" key={teammate.id}>
               <img
@@ -155,6 +169,16 @@ function App() {
               >
                 Delete
               </button>
+
+              {!!randomData?.[teammate.id] && (
+                <div>
+                  {randomData[teammate.id]?.loading ? (
+                    <div>Loading...</div>
+                  ) : (
+                    <div>Got random data</div>
+                  )}
+                </div>
+              )}
             </div>
           ))}
         </section>
@@ -194,7 +218,7 @@ function App() {
               />
             </section>
           )}
-        </div>
+        </div> */}
       </main>
     </div>
   );
